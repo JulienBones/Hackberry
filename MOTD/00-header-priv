@@ -1,0 +1,61 @@
+#!/bin/bash
+
+echo -e "\033[2J\033[H"
+
+# Couleurs
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+PURPLE="\033[1;35m"
+CYAN="\033[1;36m"
+RESET="\033[0m"
+CHECK_MARK="\033[1;32m✅\033[0m"
+CROSS_MARK="\033[1;31m❌\033[0m"
+
+USER_NAME=$(whoami)
+
+# Fonction de vérification d’état pour chaque service
+check_service() {
+    systemctl is-active --quiet "$1"
+    if [[ $? -eq 0 ]]; then
+        echo -e "$CHECK_MARK"
+    else
+        echo -e "$CROSS_MARK"
+    fi
+}
+
+# Vérification des services à surveiller
+SHELL64_STATUS=$(check_service shell64.service)
+KEYLOGGER_STATUS=$(check_service keylogger-server.service)
+MSFHANDLER_STATUS=$(check_service msfhandler.service)
+FAIL2BAN=$(check_service fail2ban.service)
+APACHE2=$(check_service apache2.service)
+SMS=$(check_service gammu-smsd.service)
+UFW=$(check_service ufw.service)
+AUTOCRYPT=$(check_service auto_encrypt.service)
+VPN=$(check_service openvpn@server.service)
+PSAD=$(check_service psad.service)
+SSHESAME=$(check_service sshesame.service)
+FRP=$(check_service frp.service)
+LASTSAVE=$(echo "Dernière image de sauvegarde : $(grep "Image de sauvegarde réussie" /var/log/auto-save.log | tail -n 1 | cut -d']' -f1 | tr -d '[')")
+PTUN=$(check_service ptunnel-ng.service)
+EXFIL=$(check_service exfil.service)
+# Art ASCII/Accueil
+echo -e "${RED}        .~~.   .~~."
+echo -e "       '. \ ' ' / .'" 
+echo -e "${GREEN}        .~ .~~~..~."
+echo -e "${GREEN}       : .~.'~'.~. :"
+echo -e "${PURPLE}      ~ (   ) (   ) ~"
+echo -e "${PURPLE}     ( : '~'.~.'~' : )"
+echo -e "${RED}      ~ .~ (   ) ~. ~"
+echo -e "${RED}       (  : '~' :  )"
+echo -e "${GREEN}        '~ .~~~. ~'"
+echo -e "${GREEN}            '~'${RESET}"
+
+echo -e ""
+echo "Temp CPU   : $(vcgencmd measure_temp 2>/dev/null | cut -d= -f2 || echo "n/a")"
+echo "RAM        : $(free -h | awk '/Mem/{print $3 "/" $2}')"
+echo "Stockage   : $(df -h / | awk 'NR==2{print $4 " libres sur " $2}')"
+echo -e "Sécurité   : Fail2ban: $FAIL2BAN  UFW: $UFW  PSAD: $PSAD  Honeypot: $SSHESAME"
+echo -e "System     : Server web  $APACHE2 Sms-d (gammu) $SMS Auto_encrypt: $AUTOCRYPT VPN: $VPN ${RESET}"
+echo -e "Hackberry  : shell64 $SHELL64_STATUS  keylogger-server $KEYLOGGER_STATUS FRP: $FRP pTunnel: $PTUN Exfil: $EXFIL msfhandler $MSFHANDLER_STATUS${RESET}"
+echo -e "${GREEN}$LASTSAVE${RESET}"
