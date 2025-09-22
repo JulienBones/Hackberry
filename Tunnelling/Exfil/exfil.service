@@ -1,0 +1,17 @@
+[Unit]
+Description=Script réception fichiers exfiltration via netcat
+After=ptunnel-ng.service
+PartOf=ptunnel-ng.service
+
+[Service]
+Type=simple
+ExecStart=/home/joe/exfil/exfilS
+Restart=always
+RestartSec=5
+User=joe
+WorkingDirectory=/home/joe/exfil
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

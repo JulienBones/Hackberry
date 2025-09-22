@@ -1,0 +1,18 @@
+[Unit]
+Description=Metasploit Handler (tmux)
+After=network.target
+
+[Service]
+Type=forking
+User=joe
+WorkingDirectory=/home/joe/msf
+ExecStart=/usr/bin/tmux -L msfhandler new-session -d -s msfhandler '/opt/metasploit-framework/bin/msfconsole -q -r /home/joe/msf/handler.rc'
+ExecStop=/usr/bin/tmux -L msfhandler kill-session -t msfhandler
+Restart=always
+RestartSec=10
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin"
+Environment="TERM=xterm-256color"
+
+[Install]
+WantedBy=multi-user.target
+

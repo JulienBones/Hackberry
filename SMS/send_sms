@@ -1,0 +1,4 @@
+#!/bin/bash
+#Ne pas oublié de modifier le numéro !!
+umask 0002
+gammu-smsd-inject TEXT "+33612345678" -text "$1"

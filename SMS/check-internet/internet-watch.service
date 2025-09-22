@@ -1,0 +1,13 @@
+[Unit]
+Description=Surveillance connectivité Internet (60s)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/internet-check.sh
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

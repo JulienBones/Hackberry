@@ -1,0 +1,19 @@
+[Unit]
+Description=Chiffrement automatique des données sensibles
+After=network.target
+StartLimitIntervalSec=300  
+StartLimitBurst=20
+
+[Service]
+Type=simple
+User=cryptobot
+Group=www-data
+SupplementaryGroups=www-data
+ExecStart=/home/cryptobot/auto_encrypt.sh start
+ExecStop=/home/cryptobot/auto_encrypt.sh stop
+PIDFile=/tmp/auto_encrypt.pid
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

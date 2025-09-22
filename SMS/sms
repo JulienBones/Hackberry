@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo -u gammu /usr/local/bin/send_sms "$1"
